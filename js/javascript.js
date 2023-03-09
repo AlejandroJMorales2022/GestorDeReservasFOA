@@ -164,7 +164,7 @@ const ingresarDomicilio=()=>{
     return domicilio;
 }
 
-//Funcion de Calculos Finales
+//Funcion de Calculos Totales
 const calcularTotales= ()=>{
     const arrayPromedios=[];
     let facturac=0;
@@ -173,11 +173,11 @@ const calcularTotales= ()=>{
     let minHuesp=100;
     let  estad=0;
     let maxEstad=0;
-
+        //Funciones de orden superior - Acumula facturacion, cantidad de pasajeros y cantidad de noches de estadia
         facturac = arrayReservas.reduce((acumCosto,reserva)=> acumCosto + (parseFloat(reserva.costoPorNoche) * parseInt(reserva.estadia)),0);
         pasaj = arrayReservas.reduce((acumPasajeros,reserva)=> acumPasajeros + parseInt(reserva.cantPasajeros),0);
         estad = arrayReservas.reduce((acumEstadia, reserva)=> acumEstadia + parseInt(reserva.estadia),0);
-
+    //Recorre el array de reservas para miscar maximos y minimos
     arrayReservas.forEach((reserva)=>{
         if (reserva.estadia>maxEstad){
              maxEstad=parseInt(reserva.estadia); //actualiza la reserva mas larga, si la acual en mayor que la almacenada
@@ -324,7 +324,7 @@ const cargarReservas=()=>{
             arrayClientes.push(cliente);
   
 }
-
+//Funcion para mostras Detalle de Clientes por consola
 const listarClientes=()=>{
     //Recorro array de Clientes con forEach
       arrayClientes.forEach((cliente)=>{
@@ -360,10 +360,10 @@ while((opcionElegida>=1 && opcionElegida<=7)|| opcionElegida!=8){
                 console.log("********** RESERVAS POR FECHA DE INGRESO ***********");
                 imprimirReservasPorFechaIn();
         }else if(opcionElegida==5){
-            //Mostrar Reservas Prologads de 7 noches o mas
-            console.clear();
-            console.log("********** RESERVAS PROLONGADAS ***********");
-            imprimirReservasProlongadas();
+                //Mostrar Reservas Prologads de 7 noches o mas
+                console.clear();
+                console.log("********** RESERVAS PROLONGADAS ***********");
+                imprimirReservasProlongadas();
         }else if(opcionElegida==6){
             //Mostrar Totales de Facturacion
             console.clear();
