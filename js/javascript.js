@@ -189,21 +189,6 @@ const calcularTotales= ()=>{
              maxHuesp=parseInt(reserva.cantPasajeros);
          }
     });
-    // for (const reserva of arrayReservas){
-        
-    //     facturac += (parseInt(reserva.costoPorNoche)*(parseInt(reserva.estadia)));
-    //     pasaj += parseInt(reserva.cantPasajeros);
-    //     estad += parseInt(reserva.estadia);
-    //     if (reserva.estadia>maxEstad){
-    //         maxEstad=parseInt(reserva.estadia); //actualiza la reserva mas larga, si la acual en mayor que la almacenada
-    //     }
-    //     if (reserva.cantPasajeros<minHuesp){ //verifica si la cantidad de huespedes en menor a la almacenada
-    //         minHuesp=parseInt(reserva.cantPasajeros);
-    //     }
-    //     if (reserva.cantPasajeros>maxHuesp){//verifica si la cantidad de huespedes en mayor a la ingresada
-    //         maxHuesp=parseInt(reserva.cantPasajeros);
-    //     }
-    // }
 
     promHuespedes = pasaj/arrayReservas.length;
     promEstadia=estad/arrayReservas.length;
@@ -220,32 +205,22 @@ const calcularTotales= ()=>{
     return arrayPromedios;
     
 }
-
-//Función que Imprime por Consola Detalle de Cada Reserva
-const imprimirReserva = ()=>{
-    arrayReservas.forEach((arrayReserva)=>{
+//Funcion que muestra por Consula el array de Reservas
+const mostrarArrayDeReservas = (arrayDeReservas)=>{
+    arrayDeReservas.forEach((arrayReserva)=>{
+        let f1=new Date(arrayReserva.fechaIngreso);
+        let f2=new Date(arrayReserva.fechaEgreso);
+        arrayReserva.calcularNochesDeEstadia();
         console.log(`******  RESERVA Nro${arrayReserva.nro} ******`);
         console.log(`A nombre de: ${arrayReserva.huesped} DNI: ${arrayReserva.dni}`);
         console.log(`Cantidad de Huéspedes ${arrayReserva.cantPasajeros}`);
-        console.log(`Fecha de Ingreso: ${arrayReserva.fechaIngreso}`);
-        console.log(`Fecha de Egreso: ${arrayReserva.fechaEgreso}`);
+        console.log(`Fecha de Ingreso: ${f1.getDate()}/${f1.getMonth()+1}/${f1.getFullYear()}`);
+        console.log(`Fecha de Engreso: ${f2.getDate()}/${f2.getMonth()+1}/${f2.getFullYear()}`);
         console.log(`Cantidad de Noches Contratadas: ${arrayReserva.estadia}`);
         console.log(`Valor por Noche: ${arrayReserva.costoPorNoche}`);       
         console.log(`Valor Total de la Reserva: $${parseInt(arrayReserva.estadia)*parseFloat(arrayReserva.costoPorNoche)}`);
         console.log(`---------------------------------------------`);
     });
-    
-    // for(const arrayReserva of arrayReservas){
-    //     console.log(`******  RESERVA Nro${arrayReserva.nro} ******`);
-    //     console.log(`A nombre de: ${arrayReserva.huesped} DNI: ${arrayReserva.dni}`);
-    //     console.log(`Cantidad de Huéspedes ${arrayReserva.cantPasajeros}`);
-    //     console.log(`Fecha de Ingreso: ${arrayReserva.fechaIngreso}`);
-    //     console.log(`Fecha de Egreso: ${arrayReserva.fechaEgreso}`);
-    //     console.log(`Cantidad de Noches Contratadas: ${arrayReserva.estadia}`);
-    //     console.log(`Valor por Noche: ${arrayReserva.costoPorNoche}`);       
-    //     console.log(`Valor Total de la Reserva: $${parseInt(arrayReserva.estadia)*parseFloat(arrayReserva.costoPorNoche)}`);
-    //     console.log(`---------------------------------------------`);
-    // }
 }
 //Funcion que Oredena Reservas por Fecha de Ingreso y las Imprime por Consola
 const imprimirReservasPorFechaIn=()=>{
@@ -254,45 +229,28 @@ const imprimirReservasPorFechaIn=()=>{
         return{    
             nro:reserva.nro,
             dni:reserva.dni,
-            nombre:reserva.huesped,
+            huesped:reserva.huesped,
             fechaIngreso:reserva.fechaIngreso,
             fechaEgreso:reserva.fechaEgreso,
             cantPasajeros:reserva.cantPasajeros,
-            costoPorNoche:reserva.costoPorNoche   
+            costoPorNoche:reserva.costoPorNoche,
+           calcularNochesDeEstadia(){
+            this.estadia=(this.fechaEgreso-this.fechaIngreso)/1000/60/60/24;
+        }
+             
         }
     }));
         //Uso el Array Nuevo Mapeado para Ordenar Reservas e Imprimirlas por Consola
         arrayReservasPorFechaIn.sort((a,b)=>(a.fechaIngreso - b.fechaIngreso))
-        
-        arrayReservasPorFechaIn.forEach((arrayReserva)=>{
-            console.log(`******  RESERVA Nro${arrayReserva.nro} ******`);
-            console.log(`A nombre de: ${arrayReserva.nombre} DNI: ${arrayReserva.dni}`);
-            console.log(`Cantidad de Huéspedes ${arrayReserva.cantPasajeros}`);
-            console.log(`Fecha de Ingreso: ${arrayReserva.fechaIngreso}`);
-            console.log(`Fecha de Egreso: ${arrayReserva.fechaEgreso}`);
-            console.log(`Cantidad de Noches Contratadas: ${arrayReserva.estadia}`);
-            console.log(`Valor por Noche: ${arrayReserva.costoPorNoche}`);       
-            console.log(`Valor Total de la Reserva: $${parseInt(arrayReserva.estadia)*parseFloat(arrayReserva.costoPorNoche)}`);
-            console.log(`---------------------------------------------`);
-        });
+        mostrarArrayDeReservas(arrayReservasPorFechaIn);
 }
 //Funcion que filtra las reservas Prolongadas de 7 o mas noches
 const imprimirReservasProlongadas=()=>{
+    //Filtro las reservas prolongadas
     let arrayReservasProlongadas = arrayReservas.filter(reserva => reserva.estadia >= 7);
-
+    //Recorro el array resultante con forEach
     if (arrayReservasProlongadas.length>0){
-        arrayReservasProlongadas.forEach(reserva =>{
-            console.log(`----------RESERVAS PROLONGADAS----------`);
-            console.log(`******  RESERVA Nro${reserva.nro} ******`);
-            console.log(`A nombre de: ${reserva.nombre} DNI: ${reserva.dni}`);
-            console.log(`Cantidad de Huéspedes ${reserva.cantPasajeros}`);
-            console.log(`Fecha de Ingreso: ${reserva.fechaIngreso}`);
-            console.log(`Fecha de Egreso: ${reserva.fechaEgreso}`);
-            console.log(`Cantidad de Noches Contratadas: ${reserva.estadia}`);
-            console.log(`Valor por Noche: ${reserva.costoPorNoche}`);       
-            console.log(`Valor Total de la Reserva: $${parseInt(reserva.estadia)*parseFloat(reserva.costoPorNoche)}`);
-            console.log(`-----------------------------------------`);
-    });
+        mostrarArrayDeReservas(arrayReservasProlongadas);
     }else{
         alert("No hay Reservas Prolngads Registradas...")
     }
@@ -368,17 +326,15 @@ const cargarReservas=()=>{
 }
 
 const listarClientes=()=>{
-    //Primera Alternativa
-    //for (const cliente of arrayClientes){
-    //    cliente.informeDeCliente();
-    //}
-    //Alternativa con funcion de orden superior
-    arrayClientes.forEach((cliente)=>{
+    //Recorro array de Clientes con forEach
+      arrayClientes.forEach((cliente)=>{
         cliente.informeDeCliente();
     });
     
     
 }
+
+
 
 //**************** INICIO SIMULADOR GESTOR DE RESERVAS DE ALOJAMIENTO *****************/
 let opcionElegida=prompt("**** MENU PRINCIPAL ****\n 1- Cargar Reserva\n 2- Listar Clientes\n 3- Detalle de Reservas por Nro.\n 4- Detalle de Reservas por Fecha de Ingreso\n 5- Detalle de Reservas Prolongadas (7 noches o más).\n 6- Totales de Facturación\n 7- Imprimir Todo por Consola\n 8- Salir")
@@ -396,14 +352,17 @@ while((opcionElegida>=1 && opcionElegida<=7)|| opcionElegida!=8){
         }else if(opcionElegida==3){
                 //Mostrar Detalle de Reservas
                 console.clear();
-                imprimirReserva();
+                console.log("********** INFORME DE RESERVAS ***********");
+                mostrarArrayDeReservas(arrayReservas);
         }else if(opcionElegida==4){
                 //Mostrar Reservas por Fecha de Ingreso
                 console.clear();
+                console.log("********** RESERVAS POR FECHA DE INGRESO ***********");
                 imprimirReservasPorFechaIn();
         }else if(opcionElegida==5){
             //Mostrar Reservas Prologads de 7 noches o mas
             console.clear();
+            console.log("********** RESERVAS PROLONGADAS ***********");
             imprimirReservasProlongadas();
         }else if(opcionElegida==6){
             //Mostrar Totales de Facturacion
@@ -412,9 +371,10 @@ while((opcionElegida>=1 && opcionElegida<=7)|| opcionElegida!=8){
     }else{
         //Mostrar Todo por Consola
         console.clear();
-        console.log("********** INFORME DE CLIENTES ***********")
+        console.log("********** DETALLE DE CLIENTES ***********");
         listarClientes();
-        imprimirReserva();
+        console.log("********** DETALLE DE RESERVAS ***********");
+        mostrarArrayDeReservas(arrayReservas);
         imprimirTotalesReserva();
     }
         
